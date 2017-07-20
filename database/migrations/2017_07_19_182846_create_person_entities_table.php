@@ -29,8 +29,8 @@ class CreatePersonEntitiesTable extends Migration
 			$table->string('role', 200)->nullable();
 
 
-			$table->integer('created_by_id')->unsigned();
-			$table->integer('modified_by_id')->unsigned();
+			$table->bigInteger('created_by_id')->unsigned();
+			$table->bigInteger('modified_by_id')->unsigned();
 
 			$table->json('addresses_json')->nullable()->comment('{[ { type: "mailing", address: { street1: "blah", city: "blah", state: "FL"}},{ type: "physical", address: { street1: "blah", city: "blah", state: "FL" }} ]}');
 

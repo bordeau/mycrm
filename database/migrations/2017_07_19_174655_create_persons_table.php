@@ -26,7 +26,7 @@ class CreatePersonsTable extends Migration
 			$table->string('suffix', 10)->nullable();
 			$table->boolean('active')->default(true);
 
-			$table->integer('owner_id')->unsigned();
+			$table->bigInteger('owner_id')->unsigned();
 
 			$table->string('entityname', 100)->nullable();
 
@@ -36,8 +36,8 @@ class CreatePersonsTable extends Migration
 			$table->dateTime('converted_at')->nullable();
 			$table->dateTime('active_changed_at')->nullable();
 
-			$table->integer('created_by_id')->unsigned();
-			$table->integer('modified_by_id')->unsigned();
+			$table->bigInteger('created_by_id')->unsigned();
+			$table->bigInteger('modified_by_id')->unsigned();
 
 			$table->json('addresses_json')->nullable()->comment('{[ { type: "mailing", address: { street1: "blah", city: "blah", state: "FL"}},{ type: "physical", address: { street1: "blah", city: "blah", state: "FL" }} ]}');
 

@@ -19,7 +19,7 @@ class CreateEntityEntitiesTable extends Migration
 			$table->bigInteger('entity_id')->unsigned();
 			$table->bigInteger('child_entity_id')->unsigned();
 
-			$table->integer('created_by_id')->unsigned();
+			$table->bigInteger('created_by_id')->unsigned();
 
             $table->timestamps();
 

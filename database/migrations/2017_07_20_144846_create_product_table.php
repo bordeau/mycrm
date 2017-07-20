@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOpportunityTable extends Migration
+class CreateProductTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,25 +13,24 @@ class CreateOpportunityTable extends Migration
      */
     public function up()
     {
-        Schema::table('opportunity', function (Blueprint $table) {
-			$table->bigIncrements('id');
+        Schema::table('products', function (Blueprint $table) {
+            $table->bigIncrements('id');
+			$table->string("name": 255 );
+			$table->integer("quantity");
+			$table->decimal("price", 17, 2 );
+			$table->string( "discount description")->nullable();
+			$table-double("discount")->nullable();
+			$table->integer("build_time")->nullable();
+			$table->enum("build_time_unit", ["day", "hour", "minute"]);
 
-			$table->string('name', 100);
-
-			$table->enum('status', ['new', 'proposal', 'won', 'lost'])->default('new');
-			$table->date('proposal_at')->nullable();
-			$table->date('won_lost_at')->nullable();
-
-			$table->bigInteger('owner_id')->unsigned();
 			$table->bigInteger('created_by_id')->unsigned();
 			$table->bigInteger('modified_by_id')->unsigned();
 
-			$table->softDeletes();
             $table->timestamps();
 
-			$table->foreign('owner_id')->references('id')->on('users');
 			$table->foreign('created_by_id')->references('id')->on('users');
 			$table->foreign('modified_by_id')->references('id')->on('users');
+
         });
     }
 
@@ -42,8 +41,9 @@ class CreateOpportunityTable extends Migration
      */
     public function down()
     {
-        Schema::table('opportunity', function (Blueprint $table) {
-            Schema::dropIfExists('opportunity');
+        Schema::table('products', function (Blueprint $table) {
+			Schema::dropIfExists('purchase_products');
+            Schema::dropIfExists('products');
         });
     }
 }

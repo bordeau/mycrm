@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('username', 100)->unique();
 			$table->string('firstname', 100);
 			$table->string('lastname', 100);
@@ -31,10 +31,10 @@ class CreateUsersTable extends Migration
 			$table->dateTime('lastlogin_at')->nullable();
 
 			$table->integer('profile_id')->unsigned();
-			$table->integer('manager_id')->unsigned();
+			$table->bigInteger('manager_id')->unsigned();
 
-			$table->integer('created_by_id')->unsigned();
-			$table->integer('modified_by_id')->unsigned();
+			$table->bigInteger('created_by_id')->unsigned();
+			$table->bigInteger('modified_by_id')->unsigned();
 
 			$table->softDeletes();
             $table->rememberToken();
@@ -55,6 +55,7 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+		Schema::dropIfExists('opportunity_users');
         Schema::dropIfExists('users');
     }
 }

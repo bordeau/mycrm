@@ -24,8 +24,8 @@ class CreateEntityTable extends Migration
 
 			$table->enum('type', ['biz-p', 'gov', 'fam', 'biz-np'])->nullable()->comment('biz-p=business for profit, gov=government, fam=family, biz-np=business non-profit, edu should fit into the others');
 
-			$table->integer('created_by_id')->unsigned();
-			$table->integer('modified_by_id')->unsigned();
+			$table->bigInteger('created_by_id')->unsigned();
+			$table->bigInteger('modified_by_id')->unsigned();
 
 			$table->json('addresses_json')->nullable()->comment('{[ { type: "mailing", address: { street1: "blah", city: "blah", state: "FL"}},{ type: "physical", address: { street1: "blah", city: "blah", state: "FL" }} ]}');
 
