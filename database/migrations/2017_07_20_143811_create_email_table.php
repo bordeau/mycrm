@@ -20,6 +20,7 @@ class CreateEmailTable extends Migration
 			$table->bigInteger("from_user")->unsigned();
 			$table->json("to_person_email_json")->comment("{[{name:'Joe Blow': email:'Jb@test.com' }]}");
 
+			// look at polymorphic relations in the Eloquent relations section
 			$table->bigInteger("related_id")->unsigned()->nullable()->commment("can be an other table relation, must specify related_type");
 			$table->enum("related_type", ["opportunity", "entity", "persons"])->nullable();
 

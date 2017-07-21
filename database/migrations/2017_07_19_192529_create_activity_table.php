@@ -21,6 +21,7 @@ class CreateActivityTable extends Migration
 			$table->dateTime('start_date');
 			$table->boolean('reminder')->default(true);
 
+			// look at polymorphic relations in the Eloquent relations section
 			$table->bigInteger('what_id')->unsigned()->nullable()->comment('can be an opportunity or other what undefined now');
 			$table->bigInteger('who_id')->unsigned()->nullable()->comment('can be a person, entity, or person_entities');
 
