@@ -22,6 +22,7 @@ class CreateActivityUsersTable extends Migration
 			$table->integer('created_by_id')->unsigned();
 			$table->integer('modified_by_id')->unsigned();
 
+			$table->softDeletes();
             $table->timestamps();
 
 

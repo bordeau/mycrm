@@ -47,7 +47,11 @@ class CreatePersonsTable extends Migration
 			$table->foreign('owner_id')->references('id')->on('users');
 			$table->foreign('created_by_id')->references('id')->on('users');
 			$table->foreign('modified_by_id')->references('id')->on('users');
-		}
+		};
+		// example creating trigger or stored procedure --- need this minimum for each table if turn off letting Eloquent manage time stamps
+		DB::unprepared( 'CREATE TRIGGER `persons_BEFORE_INSERT` BEFORE INSERT ON `persons` FOR EACH ROW BEGIN if ( new.`created_at` is null ) then set new.`created_at` = now(); end if; if ( new.`updated_at` is null ) then set new.`updated_at` = now(); end if; END' );
+		DB::unprepared( 'CREATE TRIGGER `persons_BEFORE_UPDATE` BEFORE UPDATE ON `persons` FOR EACH ROW BEGIN if ( new.`created_at` is null ) then set new.`created_at` = old.`created_at`; end if; if ( new.`updated_at` is null ) then set new.`updated_at` = now(); end if; END' );
+
 	}
 
 	/**

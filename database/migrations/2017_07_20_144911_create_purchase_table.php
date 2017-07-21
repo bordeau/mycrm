@@ -32,6 +32,7 @@ class CreatePurchaseTable extends Migration
 			$table->bigInteger('created_by_id')->unsigned();
 			$table->bigInteger('modified_by_id')->unsigned();
 
+			$table->softDeletes();
             $table->timestamps();
 
 			$table->foreign('opportunity_id')->references('id')->on('opportunity');

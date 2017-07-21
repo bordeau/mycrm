@@ -26,6 +26,7 @@ class CreateEmailTable extends Migration
 
 			$table->integer('created_by_id')->unsigned();
 
+			$table->softDeletes();
             $table->timestamps();
 
 			$table->foreign('from_user')->references('id')->on('users');

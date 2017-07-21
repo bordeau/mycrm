@@ -25,6 +25,7 @@ class CreatePurchaseApprovalTable extends Migration
 			$table->bigInteger('created_by_id')->unsigned();
 			$table->bigInteger('modified_by_id')->unsigned();
 
+			$table->softDeletes();
             $table->timestamps();
 
 			$table->foreign('purchase_id')->references('id')->on('purchases');

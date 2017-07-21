@@ -26,6 +26,7 @@ class CreateProductTable extends Migration
 			$table->bigInteger('created_by_id')->unsigned();
 			$table->bigInteger('modified_by_id')->unsigned();
 
+			$table->softDeletes();
             $table->timestamps();
 
 			$table->foreign('created_by_id')->references('id')->on('users');

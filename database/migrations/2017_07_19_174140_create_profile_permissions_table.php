@@ -18,8 +18,13 @@ class CreateProfilePermissionsTable extends Migration
 			$table->integer('profiles_id')->unsigned();
 			$table->integer('permissions_id')->unsigned();
 
+			$table->bigInteger('created_by_id')->unsigned();
+			$table->bigInteger('modified_by_id')->unsigned();
+
 			$table->timestamps();
 
+			$table->foreign('created_by_id')->references('id')->on('users');
+			$table->foreign('modified_by_id')->references('id')->on('users');
 			$table->foreign('profiles_id')->references('id')->on('profiles');
 			$table->foreign('permissions_id')->references('id')->on('permissions');
 		}

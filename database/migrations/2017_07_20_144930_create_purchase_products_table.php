@@ -25,6 +25,7 @@ class CreatePurchaseProductsTable extends Migration
 			$table->bigInteger('created_by_id')->unsigned();
 			$table->bigInteger('modified_by_id')->unsigned();
 
+			$table->softDeletes();
             $table->timestamps();
 
 			$table->foreign('product_id')->references('id')->on('products');

@@ -32,6 +32,7 @@ class CreateActivityTable extends Migration
 			$table->bigInteger('created_by_id')->unsigned();
 			$table->bigInteger('modified_by_id')->unsigned();
 
+			$table->softDeletes();
             $table->timestamps();
 
 		//	$table->foreign('what_id')->references('id')->on('opportunity');

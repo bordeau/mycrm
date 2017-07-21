@@ -18,7 +18,13 @@ class CreateProfilesTable extends Migration
 			$table->string('name', 100);
 			$table->boolean('default')->default(false);
 
-			$table->timestamps();
+			$table->bigInteger('created_by_id')->unsigned();
+			$table->bigInteger('modified_by_id')->unsigned();
+
+            $table->timestamps();
+
+			$table->foreign('created_by_id')->references('id')->on('users');
+			$table->foreign('modified_by_id')->references('id')->on('users');
     }
 
     /**
