@@ -13,39 +13,54 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('username', 100)->unique();
-			$table->string('firstname', 100);
-			$table->string('lastname', 100);
-            $table->string('email', 200);
-            $table->string('password', 100)->nullable();
+		if ( Schema::hasTable('users')  ) {
 
-			$table->boolean('active')->default(false);
-			$table->boolean('frozen')->default(false);
-			$table->boolean('system_mgr')->default(false);
-			$table->boolean('password_reset')->default(false);
+			if ( Schema::hasTable('profiles')  )
+				$table->foreign('profile_id')->references('id')->on('profiles');
 
-			$table->dateTime('password_reset_at')->nullable();
-			$table->dateTime('password_changed_at')->nullable();
-			$table->dateTime('lastlogin_at')->nullable();
+			if ( Schema::hasTable('user')  ) {
+				$table->foreign('manager_id')->references('id')->on('users');
+				$table->foreign('created_by_id')->references('id')->on('users');
+				$table->foreign('modified_by_id')->references('id')->on('users');
+			}
 
-			$table->integer('profile_id')->unsigned();
-			$table->bigInteger('manager_id')->unsigned();
+		}
+		else {
+	        Schema::create('users', function (Blueprint $table) {
+				$table->engine = "InnoDB";  // only for mysql or mysql like db
+	            $table->bigIncrements('id');
+	            $table->string('username', 100)->unique();
+				$table->string('firstname', 100);
+				$table->string('lastname', 100);
+	            $table->string('email', 200);
+	            $table->string('password', 100)->nullable();
 
-			$table->bigInteger('created_by_id')->unsigned();
-			$table->bigInteger('modified_by_id')->unsigned();
+				$table->boolean('active')->default(false);
+				$table->boolean('frozen')->default(false);
+				$table->boolean('system_mgr')->default(false);
+				$table->boolean('password_reset')->default(false);
 
-			$table->softDeletes();
-            $table->rememberToken();
-            $table->timestamps();
+				$table->dateTime('password_reset_at')->nullable();
+				$table->dateTime('password_changed_at')->nullable();
+				$table->dateTime('lastlogin_at')->nullable();
+
+				$table->integer('profile_id')->unsigned();
+				$table->bigInteger('manager_id')->unsigned();
+
+				$table->bigInteger('created_by_id')->unsigned();
+				$table->bigInteger('modified_by_id')->unsigned();
+
+				$table->softDeletes();
+	            $table->rememberToken();
+	            $table->timestamps();
+
+				if ( Schema::hasTable('profiles')  )
+					$table->foreign('profile_id')->references('id')->on('profiles');
+
+	        });
+		}
 
 
-			$table->foreign('profile_id')->references('id')->on('profiles');
-			$table->foreign('manager_id')->references('id')->on('users');
-			$table->foreign('created_by_id')->references('id')->on('users');
-			$table->foreign('modified_by_id')->references('id')->on('users');
-        });
     }
 
     /**
