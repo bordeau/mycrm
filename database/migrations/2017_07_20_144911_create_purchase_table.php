@@ -40,6 +40,7 @@ class CreatePurchaseTable extends Migration
 			$table->foreign('opportunity_id')->references('id')->on('opportunity');
 			$table->foreign('created_by_id')->references('id')->on('users');
 			$table->foreign('modified_by_id')->references('id')->on('users');
+    });
     }
 
     /**

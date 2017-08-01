@@ -27,7 +27,7 @@ class CreateProfilePermissionsTable extends Migration
 			$table->foreign('modified_by_id')->references('id')->on('users');
 			$table->foreign('profiles_id')->references('id')->on('profiles');
 			$table->foreign('permissions_id')->references('id')->on('permissions');
-		}
+		});
     }
 
     /**

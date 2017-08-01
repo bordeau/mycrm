@@ -24,7 +24,7 @@ class CreatePermissionssTable extends Migration
 
 			$table->foreign('created_by_id')->references('id')->on('users');
 			$table->foreign('modified_by_id')->references('id')->on('users');
-		}
+		});
     }
 
     /**
