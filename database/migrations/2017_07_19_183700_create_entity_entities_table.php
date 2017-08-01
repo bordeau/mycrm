@@ -13,21 +13,38 @@ class CreateEntityEntitiesTable extends Migration
      */
     public function up()
     {
-        Schema::table('entity_entities', function (Blueprint $table) {
-            $table->bigIncrements('id');
+		if ( Schema::hasTable('entity_entities')  ) {
+			if ( Schema::hasTable('users')  ) {
+				$table->foreign('created_by_id')->references('id')->on('users');
+			//	$table->foreign('modified_by_id')->references('id')->on('users');
+			}
+			if ( Schema::hasTable('entity')  ) {
+				$table->foreign('child_entity_id')->references('id')->on('entity');
+				$table->foreign('entity_id')->references('id')->on('entity');
+			}
+		}
+		else {
+	        Schema::table('entity_entities', function (Blueprint $table) {
+	            $table->bigIncrements('id');
 
-			$table->bigInteger('entity_id')->unsigned();
-			$table->bigInteger('child_entity_id')->unsigned();
+				$table->bigInteger('entity_id')->unsigned();
+				$table->bigInteger('child_entity_id')->unsigned();
 
-			$table->bigInteger('created_by_id')->unsigned();
+				$table->bigInteger('created_by_id')->unsigned();
 
-			$table->softDeletes();
-            $table->timestamps();
+				$table->softDeletes();
+	            $table->timestamps();
 
-			$table->foreign('created_by_id')->references('id')->on('users');
-			$table->foreign('child_entity_id')->references('id')->on('entity');
-			$table->foreign('entity_id')->references('id')->on('entity');
-        });
+				if ( Schema::hasTable('users')  ) {
+					$table->foreign('created_by_id')->references('id')->on('users');
+				//	$table->foreign('modified_by_id')->references('id')->on('users');
+				}
+				if ( Schema::hasTable('entity')  ) {
+					$table->foreign('child_entity_id')->references('id')->on('entity');
+					$table->foreign('entity_id')->references('id')->on('entity');
+				}
+	        });
+		}
     }
 
     /**

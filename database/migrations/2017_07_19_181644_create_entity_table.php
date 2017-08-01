@@ -13,28 +13,41 @@ class CreateEntityTable extends Migration
      */
     public function up()
     {
-        Schema::table('entity', function (Blueprint $table) {
-			$table->bigIncrements('id');
+		if ( Schema::hasTable('entity')  ) {
+			if ( Schema::hasTable('users')  ) {
+				$table->foreign('created_by_id')->references('id')->on('users');
+				$table->foreign('modified_by_id')->references('id')->on('users');
+				$table->foreign('owner_id')->references('id')->on('users');
+			}
+		}
+		else {
+	        Schema::table('entity', function (Blueprint $table) {
+				$table->bigIncrements('id');
 
-			$table->string('name', 100);
-			$table->string('middlename', 100)->nullable();
-            $table->string('email', 200)->nullable()->comment('at least one of email or phone must exist');
-			$table->string('phone', 25)->nullable()->comment('at least one of email or phone must exist');
-			$table->boolean('active')->default(true);
+				$table->string('name', 100);
+				$table->string('middlename', 100)->nullable();
+	            $table->string('email', 200)->nullable()->comment('at least one of email or phone must exist');
+				$table->string('phone', 25)->nullable()->comment('at least one of email or phone must exist');
+				$table->boolean('active')->default(true);
 
-			$table->enum('type', ['biz-p', 'gov', 'fam', 'biz-np'])->nullable()->comment('biz-p=business for profit, gov=government, fam=family, biz-np=business non-profit, edu should fit into the others');
+				$table->enum('type', ['biz-p', 'gov', 'fam', 'biz-np'])->nullable()->comment('biz-p=business for profit, gov=government, fam=family, biz-np=business non-profit, edu should fit into the others');
 
-			$table->bigInteger('created_by_id')->unsigned();
-			$table->bigInteger('modified_by_id')->unsigned();
+				$table->bigInteger('owner_id')->unsigned();
+				$table->bigInteger('created_by_id')->unsigned();
+				$table->bigInteger('modified_by_id')->unsigned();
 
-			$table->json('addresses_json')->nullable()->comment('{[ { type: "mailing", address: { street1: "blah", city: "blah", state: "FL"}},{ type: "physical", address: { street1: "blah", city: "blah", state: "FL" }} ]}');
+				$table->json('addresses_json')->nullable()->comment('{[ { type: "mailing", address: { street1: "blah", city: "blah", state: "FL"}},{ type: "physical", address: { street1: "blah", city: "blah", state: "FL" }} ]}');
 
-			$table->softDeletes();
-            $table->timestamps();
+				$table->softDeletes();
+	            $table->timestamps();
 
-			$table->foreign('created_by_id')->references('id')->on('users');
-			$table->foreign('modified_by_id')->references('id')->on('users');
-        });
+				if ( Schema::hasTable('users')  ) {
+					$table->foreign('owner_id')->references('id')->on('users');
+					$table->foreign('created_by_id')->references('id')->on('users');
+					$table->foreign('modified_by_id')->references('id')->on('users');
+				}
+	        });
+		}
     }
 
     /**

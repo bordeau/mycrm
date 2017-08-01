@@ -13,18 +13,28 @@ class CreatePermissionssTable extends Migration
      */
     public function up()
     {
-		Schema::create('permissions', function (Blueprint $table) {
-        	$table->increments('id');
-			$table->string('name', 100);
+		if ( Schema::hasTable('permissions')  ) {
+			if ( Schema::hasTable('users')  ) {
+				$table->foreign('created_by_id')->references('id')->on('users');
+				$table->foreign('modified_by_id')->references('id')->on('users');
+			}
+		}
+		else {
+			Schema::create('permissions', function (Blueprint $table) {
+	        	$table->increments('id');
+				$table->string('name', 100);
 
-			$table->bigInteger('created_by_id')->unsigned();
-			$table->bigInteger('modified_by_id')->unsigned();
+				$table->bigInteger('created_by_id')->unsigned();
+				$table->bigInteger('modified_by_id')->unsigned();
 
-            $table->timestamps();
+	            $table->timestamps();
 
-			$table->foreign('created_by_id')->references('id')->on('users');
-			$table->foreign('modified_by_id')->references('id')->on('users');
-		});
+				if ( Schema::hasTable('users')  ) {
+					$table->foreign('created_by_id')->references('id')->on('users');
+					$table->foreign('modified_by_id')->references('id')->on('users');
+				}
+			});
+	}
     }
 
     /**

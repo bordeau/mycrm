@@ -13,19 +13,29 @@ class CreateProfilesTable extends Migration
      */
     public function up()
     {
-  		Schema::create('profiles', function (Blueprint $table) {
-          	$table->increments('id');
-      			$table->string('name', 100);
-      			$table->boolean('default')->default(false);
+		if ( Schema::hasTable('profiles')  ) {
+			if ( Schema::hasTable('users')  ) {
+				$table->foreign('created_by_id')->references('id')->on('users');
+				$table->foreign('modified_by_id')->references('id')->on('users');
+			}
+		}
+		else {
+	  		Schema::create('profiles', function (Blueprint $table) {
+	          	$table->increments('id');
+	      			$table->string('name', 100);
+	      			$table->boolean('default')->default(false);
 
-      			$table->bigInteger('created_by_id')->unsigned();
-      			$table->bigInteger('modified_by_id')->unsigned();
+	      			$table->bigInteger('created_by_id')->unsigned();
+	      			$table->bigInteger('modified_by_id')->unsigned();
 
-                  $table->timestamps();
+	                  $table->timestamps();
 
-      			$table->foreign('created_by_id')->references('id')->on('users');
-      			$table->foreign('modified_by_id')->references('id')->on('users');
-      });
+					if ( Schema::hasTable('users')  ) {
+		      			$table->foreign('created_by_id')->references('id')->on('users');
+		      			$table->foreign('modified_by_id')->references('id')->on('users');
+					}
+	      });
+  		}
     }
 
     /**

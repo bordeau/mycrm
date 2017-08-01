@@ -13,22 +13,42 @@ class CreateProfilePermissionsTable extends Migration
      */
     public function up()
     {
-		Schema::create('profile_permissions', function (Blueprint $table) {
-			$table->increments('id');
-			$table->integer('profiles_id')->unsigned();
-			$table->integer('permissions_id')->unsigned();
+		if ( Schema::hasTable('profile_permissions')  ) {
+			if ( Schema::hasTable('users')  ) {
+				$table->foreign('created_by_id')->references('id')->on('users');
+				$table->foreign('modified_by_id')->references('id')->on('users');
+			}
+			if ( Schema::hasTable('profiles')  ) {
+				$table->foreign('profiles_id')->references('id')->on('profiles');
+			}
+			if ( Schema::hasTable('permissions')  ) {
+				$table->foreign('permissions_id')->references('id')->on('permissions');
+			}
+		}
+		else {
+			Schema::create('profile_permissions', function (Blueprint $table) {
+				$table->increments('id');
+				$table->integer('profiles_id')->unsigned();
+				$table->integer('permissions_id')->unsigned();
 
-			$table->bigInteger('created_by_id')->unsigned();
-			$table->bigInteger('modified_by_id')->unsigned();
+				$table->bigInteger('created_by_id')->unsigned();
+				$table->bigInteger('modified_by_id')->unsigned();
 
-			$table->timestamps();
+				$table->timestamps();
 
-			$table->foreign('created_by_id')->references('id')->on('users');
-			$table->foreign('modified_by_id')->references('id')->on('users');
-			$table->foreign('profiles_id')->references('id')->on('profiles');
-			$table->foreign('permissions_id')->references('id')->on('permissions');
-		});
-    }
+				if ( Schema::hasTable('users')  ) {
+					$table->foreign('created_by_id')->references('id')->on('users');
+					$table->foreign('modified_by_id')->references('id')->on('users');
+				}
+				if ( Schema::hasTable('profiles')  ) {
+					$table->foreign('profiles_id')->references('id')->on('profiles');
+				}
+				if ( Schema::hasTable('permissions')  ) {
+					$table->foreign('permissions_id')->references('id')->on('permissions');
+				}
+			});
+		}
+	}
 
     /**
      * Reverse the migrations.

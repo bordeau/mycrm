@@ -13,25 +13,40 @@ class CreateHasFile extends Migration
      */
     public function up()
     {
-        Schema::table('hasfile', function (Blueprint $table) {
-			$table->bigIncrements('id');
+		if ( Schema::hasTable('hasfile')  ) {
+			if ( Schema::hasTable('users')  ) {
+				$table->foreign('created_by_id')->references('id')->on('users');
+			//	$table->foreign('modified_by_id')->references('id')->on('users');
+			}
+			if ( Schema::hasTable('file')  ) {
+				$table->foreign('file_id')->references('id')->on('file');
+			}
+		}
+		else {
+	        Schema::table('hasfile', function (Blueprint $table) {
+				$table->bigIncrements('id');
 
-			$table->bigInteger('file_id')->unsigned();
+				$table->bigInteger('file_id')->unsigned();
 
 
-			// lookup polymoprhic Eloquent relationships in models
-			$table->bigInteger('object_id')->unsigned();
-			$table->string( "object_type", 75 );
+				// lookup polymoprhic Eloquent relationships in models --- looks like polymoprhic is in the model vs. migration
+				$table->bigInteger('object_id')->unsigned();
+				$table->string( "object_type", 75 );
 
-			$table->bigInteger('created_by_id')->unsigned();
-		//	$table->bigInteger('modified_by_id')->unsigned();   // should be only insert/delete
+				$table->bigInteger('created_by_id')->unsigned();
+			//	$table->bigInteger('modified_by_id')->unsigned();   // should be only insert/delete
 
-			$table->timestamps();
+				$table->timestamps();
 
-			$table->foreign('file_id')->references('id')->on('file');
-			$table->foreign('created_by_id')->references('id')->on('users');
-		//	$table->foreign('modified_by_id')->references('id')->on('users');
-        });
+				if ( Schema::hasTable('users')  ) {
+					$table->foreign('created_by_id')->references('id')->on('users');
+				//	$table->foreign('modified_by_id')->references('id')->on('users');
+				}
+				if ( Schema::hasTable('file')  ) {
+					$table->foreign('file_id')->references('id')->on('file');
+				}
+	        });
+		}
     }
 
     /**
